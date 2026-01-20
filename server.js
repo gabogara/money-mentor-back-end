@@ -7,7 +7,6 @@ const cors = require('cors');
 const logger = require('morgan');
 
 //auth and users
-const verifyToken = require('./middleware/verify-token');
 const authRouter = require('./controllers/auth');
 const usersRouter = require('./controllers/users');
 const transactionsRoutes = require('./controllers/transactions');
