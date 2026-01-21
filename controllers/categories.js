@@ -4,7 +4,7 @@ const Category = require('../models/category');
 const verifyToken = require('../middleware/verify-token');
 
 //predefined categories (used in dropdowns)
-router.get('/', verifyToken, async (req, res) => {
+router.get('/',verifyToken, async (req, res) => {
   try {
     const categories = await Category.find({});
     res.status(200).json(categories);
