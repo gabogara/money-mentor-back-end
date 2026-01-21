@@ -22,7 +22,7 @@ router.get('/recent', verifyToken, async (req, res) => {
   try {
     const recentTransactions = await Transaction.find({ userId: req.user._id })
     .populate('categoryId')
-    .sort({ date: -1 })
+    .sort({ date: -1, createdAt: -1 })
     .limit(5)
 
     res.status(200).json(recentTransactions);
