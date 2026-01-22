@@ -43,6 +43,8 @@ router.get('/monthly-summary', verifyToken, async (req, res) => {
       userId: req.user._id,
       date: { $gte: startOfMonth }
     }).sort({ date: -1, createdAt: -1 });
+    }).populate('categoryId')
+    .sort({ date: -1 });
 
     res.status(200).json(transactions);
   } catch (err) {
