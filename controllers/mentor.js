@@ -1,6 +1,5 @@
 const dotenv = require("dotenv");
 dotenv.config();
-
 const express = require("express");
 const verifyToken = require("../middleware/verify-token");
 const Transaction = require("../models/transaction");
@@ -28,6 +27,7 @@ router.post("/ai-test", verifyToken, async (req, res) => {
   }
 });
 
+//reads points from req.user calculates level
 router.get("/", verifyToken, async (req, res) => {
   try {
     const user = req.user;
@@ -37,7 +37,7 @@ router.get("/", verifyToken, async (req, res) => {
       .sort({ createdAt: -1 })
       .limit(5);
 
-    const { level, name } = getLevelFromPoints(user.points);
+    const { level, name } = getLevelFromPoints(user.points); //computes level gives lvl name
 
     // AI Studio / preview client
     const genAI = new GoogleGenAI({
@@ -83,6 +83,8 @@ Then:
     const mentorMessage =
       response?.response?.candidates?.[0]?.content?.parts?.[0]?.text ||
       "Keep going — small steps add up.";
+      // response.response.candidates[0].content.parts[0].text
+
 
     // const mentorMessage =
     //   response?.response?.candidates?.[0]?.content?.parts?.[0]?.text ??

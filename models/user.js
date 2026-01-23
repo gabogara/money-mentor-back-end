@@ -11,7 +11,7 @@ const userSchema = new mongoose.Schema(
       required: true,
     },
     points: {
-      type: Number,
+      type: Number, //every user has points starting at 0
       default: 0,
     },
   },
