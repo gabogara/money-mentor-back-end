@@ -8,7 +8,9 @@ const User = require("../models/user");
 // GET /transactions - list only current user's transactions
 router.get("/", verifyToken, async (req, res) => {
   try {
-    const transactions = await Transaction.find({ userId: req.user._id }).sort({
+    const transactions = await Transaction.find({ userId: req.user._id })
+    .populate('categoryId')
+    .sort({
       date: -1,
       createdAt: -1,
     }).populate("categoryId");
@@ -56,7 +58,8 @@ router.get("/monthly-summary", verifyToken, async (req, res) => {
 // GET /transactions/:id - show one (owner-only)
 router.get("/:id", verifyToken, async (req, res) => {
   try {
-    const transaction = await Transaction.findById(req.params.id);
+    const transaction = await Transaction.findById(req.params.id)
+    .populate('categoryId');
 
     if (!transaction) {
       return res.status(404).json({ err: "Transaction not found" });
@@ -98,8 +101,9 @@ router.post("/", verifyToken, async (req, res) => {
     );
       await user.save();
     }
-    transaction._doc.categoryId = transaction.categoryId
-    res.status(201).json(transaction);
+    const populatedTransaction = await transaction.populate('categoryId');
+
+    res.status(201).json(populatedTransaction);
   } catch (err) {
     res.status(500).json({ err: err.message });
   }
